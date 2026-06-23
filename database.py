@@ -16,13 +16,12 @@ class Database:
         else:
             print("ERRO AO CONECTAR AO BANCO DE DADOS!!")
 
-    def insert_produto(self):
-        param = ("Arroz", "alimento", 10.00, 20)
+    def insert_produto(self,dados):
         self.conectar()
         try:
-            self.cursor.execute("INSERT INTO produto (nome,tipo,preco,qtde_estoque) VALUES (%s,%s,%s,%s)",param)
+            self.cursor.execute("INSERT INTO produto (nome,tipo,preco,qtde_estoque) VALUES (%s,%s,%s,%s)",dados)
             self.conn.commit()
-            print("PRODUTO CADASTRADO COM SUCESSO!")
+            return True
 
         except Exception as error:
             print(error)
@@ -36,8 +35,7 @@ class Database:
         try:
             self.cursor.execute("SELECT * FROM produto; ")
             produtos = self.cursor.fetchall()  ###Converter o objeto do banco para uma lista de dicionarios
-            for prod in produtos:
-                print(f" id: {prod[0]} / nome: {prod[1]} / preco: {prod[3]} ")
+            return produtos
         except Exception as error:
             print(error)
 
@@ -59,24 +57,17 @@ class Database:
             self.disconnect()
 
 
-    def update_produto(self, id_prod):
+    def update_produto(self, dados):
         self.conectar()
         try:
-            prod = self.select_produto_by_id(id_prod)
-            print(prod)
-            prod[1] = input("Digite o nome: ")
-            prod[2] = input("Digite o tipo: ")
-            prod[3] = float(input("Digite o preço: "))
-            prod[4] = int(input("Digite a quantidade: "))
-            print(prod)
             self.cursor.execute(f"""
-                                UPDATE produto SET nome = '{prod[1]}',
-                                tipo = '{prod[2]}', preco = '{prod[3]}',
-                                qtde_estoque = '{prod[4]}'
-                                WHERE id_produto = '{prod[0]}';
+                                UPDATE produto SET nome = '{dados[1]}',
+                                tipo = '{dados[2]}', preco = '{dados[3]}',
+                                qtde_estoque = '{dados[4]}'
+                                WHERE id_produto = '{dados[0]}';
                                 """)
             self.conn.commit()
-            print("PRODUTO ATUALIZADO COM SUCESSO!!!")
+            return True
         except:
             pass
 
@@ -89,7 +80,8 @@ class Database:
         try:
             self.cursor.execute(f" DELETE FROM produto WHERE id_produto={id_produto}; ")
             self.conn.commit()
-            print("DELETADO COM SUCESSO!")
+            return True
+        
         except Exception as error:
             print(error)
 
