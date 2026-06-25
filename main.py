@@ -1,79 +1,56 @@
-from produto import Produto
+from Produto import Produto
 
-prod = Produto()
+def menu():
+    print("1 - Cadastrar")
+    print("2 - Listar")
+    print("3 - Editar")
+    print("4 - Excluir")
+    print("5 - Sair")
 
-id_atualiza = int(input("Digite o id do produto que deseja atualizar: "))
+while True:
+    print(" ***** SYSCRUD ***** ")
+    menu()
+    op = input("Digite a opção: ")
+    if op == '1':
+        produto = Produto()
+        produto.nome = input("DIGITE O NOME DO PRODUTO: ")
+        produto.tipo = input("DIGITE O TIPO DO PRODUTO: ")
+        produto.preco = float(input("DIGITE O PREÇO DO PRODUTO: "))
+        produto.estoque = int(input("DIGITE O ESTOQUE DO PRODUTO: "))
 
-prod_atualizar = prod.selecionar_produto(id_atualiza)
-print(prod_atualizar)
+        res = produto.cadastrar()
+        if res == True:
+            print("PRODUTO CADASTRADO COM SUCESSO!!!")
 
-prod_atualizar[1] = input("Digite o nome: ")
-prod_atualizar[2] = input("Digite o tipo: ")
-prod_atualizar[3] = float(input("Digite o preço: "))
-prod_atualizar[4] = int(input("Digite a quantidade: "))
+    elif op == '2':
+        produto = Produto()
+        lista_produtos = produto.listar_produtos()
+        for produto in lista_produtos:
+            print(f" id: {produto[0]} | nome:{produto[1]} | preco: {produto[3]} ")
 
-resposta = prod.atualizar_produto(prod_atualizar)
-if resposta == True:
-    print("Atualizado com sucesso")
+    elif op == '3':
+        prod = Produto()
+        id_atualiza = int(input("DIGITE O ID DO PRODUTO QUE DESEJA ATUALIZAR: "))
+        prod_atualizar = prod.selecionar_produto(id_atualiza)
+        prod_atualizar[1] = input("DIGITE O NOME:  ")
+        prod_atualizar[2] = input("DIGITE O TIPO: ")
+        prod_atualizar[3] = float(input("DIGITE O PRECO: "))
+        prod_atualizar[4] = int(input("DIGITE A QUANTIDADE: "))
 
+        resposta = prod.atualizar_produto( prod_atualizar )
+        if resposta == True:
+            print("ATUALIZADO COM SUCESSO!!!!")
 
+    elif op == '4':
+        id_deletar = int(input("DIGITE O ID PARA DELETAR O PRODUTO: "))
+        prod2 = Produto()
+        res = prod2.deletar_produto(id_deletar)
+        if res == True:
+            print("PRODUTO DELETADO COM SUCESSO!!2")
 
+    elif op == '5':
+        print("LOGOFF DO SYSCRUD")
+        break
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# print(prod)
-# # prod.nome = input("Digite o nome do produto: ")
-# # prod.tipo = input("Digite o tipo do produto: ")
-# # prod.preco = float(input("Digite o preço do produto: "))
-# # prod.estoque = int(input("Digite o estoque do produto: "))
-
-# # res = prod.cadastrar()
-# # if res == True:
-# #     print("PRODUTO CADASTRADO COM SUCESSO!")
-
-# lista_produtos = prod.listar_produtos()
-# for prod in lista_produtos:
-#     print(f" id: {prod[0]} / nome: {prod[1]} / preco: {prod[3]} ")
-
-# id_deletar = int(input("Digite o id do produto que deseja deletar: "))
-# prod2 = Produto()
-# prod2.deletar_produto(id_deletar)
+    else:
+        print("OPÇÃO INVÁLIDA!!!!")
